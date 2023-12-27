@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Информация с датчиков</title>
+        <script type="text/javascript" src="getData.js"></script>
+    </head>
+
+    <body>
+
+        <iframe id="p1" width="453" height="250" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2388828/charts/1?api_key=P270Q7US5PVK73F5"></iframe><br>
+        <iframe id="p2" width="453" height="250" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2388828/charts/2?api_key=P270Q7US5PVK73F5"></iframe>
+
+        <form style="width: 31%;">
+            <fieldset>
+                <legend>Настройки</legend>
+
+                <input type="checkbox" id="auto-update"> Автообновление<br>
+                
+                <fieldset>
+                    <legend>Настройки сортировки по дате</legend>
+                    <input type="checkbox" id="datecheck" "> Сортировка данных по времени<br>
+                    <input type="datetime-local" id="datestart"> Начало измерений<br>
+                    <input type="datetime-local" id="dateend"> Конец измерений<br>
+                </fieldset>
+
+                <input type="number" min="0" max="7999" id="nums"> Кол-во значений<br>
+
+                <input type="button" value="Применить настройки" onclick="setSettings()">
+        </form>
+    </body>
+</html>

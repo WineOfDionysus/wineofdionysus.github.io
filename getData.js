@@ -40,3 +40,27 @@ function setSettings()
         }
     }
 }
+
+function downloadData()
+{
+    var data = 'https://api.thingspeak.com/channels/2388828/feeds.csv?api_key=P270Q7US5PVK73F5';
+    if(document.getElementById("setSettingsToLoad").checked)
+    {
+        if(document.getElementById("nums").value != "")
+        {
+            data += "&results=" + document.getElementById("nums").value;
+        }
+
+        if(document.getElementById("datecheck").checked)
+        {
+            var dstart = new Date(Date.parse(document.getElementById("datestart").value));
+            var dend = new Date(Date.parse(document.getElementById("dateend").value));
+
+            data += "&start=" + dstart.toISOString().substring(0,10) + "%20" + dstart.toISOString().substring(11,19) +
+            "&end=" + dend.toISOString().substring(0,10) + "%20" + dend.toISOString().substring(11,19);
+        }
+
+    }
+
+    document.location = data;
+}

@@ -1,13 +1,71 @@
+var fullScreen = 0;
+
+window.addEventListener("load",()=>{
+    var plotsType = document.getElementById("selectType");
+    plotsType.addEventListener('change', function(e) {  
+        setSettings();
+      });
+    var plotsHeight = document.getElementById("plotsH");
+    plotsHeight.addEventListener('change', function(e) {  
+        setSettings();
+      });
+    var plotsWidth = document.getElementById("plotsW");
+    plotsWidth.addEventListener('change', function(e) {  
+        setSettings();
+      });
+});
+
+
+
 function setSettings()
 {
-    var standart1 = "https://thingspeak.com/channels/2388828/charts/1?api_key=P270Q7US5PVK73F5";
-    var standart2 = "https://thingspeak.com/channels/2388828/charts/2?api_key=P270Q7US5PVK73F5";
+    var standart1 = "https://thingspeak.com/channels/2388828/charts/1?api_key=P270Q7US5PVK73F5&width=auto&height=auto&xaxis=Дата и время&title=Данные датчика температуры";
+    var standart2 = "https://thingspeak.com/channels/2388828/charts/2?api_key=P270Q7US5PVK73F5&width=auto&height=auto&xaxis=Дата и время&title=Данные датчика влажности";
 
     var plot1 = document.getElementById("p1");
     var plot2 = document.getElementById("p2");
 
     plot1.src = standart1;
     plot2.src = standart2;
+
+    if(fullScreen == 0)
+    {
+
+        var plotsHeight = document.getElementById("plotsH");
+        var plotsWidth = document.getElementById("plotsW");
+
+        document.getElementsByTagName('iframe')[0].height = plotsHeight.value + "px";
+        document.getElementsByTagName('iframe')[1].height = plotsHeight.value + "px";
+
+        document.getElementsByTagName('iframe')[0].width = plotsWidth.value + "%";
+        document.getElementsByTagName('iframe')[1].width = plotsWidth.value + "%";
+    }
+    else
+    {
+        document.getElementsByTagName('iframe')[0].height = window.screen.height/2 + "px";
+        document.getElementsByTagName('iframe')[1].height = window.screen.height/2 + "px";
+
+        document.getElementsByTagName('iframe')[0].width = "100%";
+        document.getElementsByTagName('iframe')[1].width = "100%";
+    }
+
+    var plotsType = document.getElementById("selectType");
+
+    if(plotsType.value == "line")
+    {
+        plot1.src = plot1.src + "&type=line";
+        plot2.src = plot2.src + "&type=line";
+    }
+    else if(plotsType.value == "spline")
+    {
+        plot1.src = plot1.src + "&type=spline";
+        plot2.src = plot2.src + "&type=spline";
+    }
+    else if(plotsType.value == "column")
+    {
+        plot1.src = plot1.src + "&type=column";
+        plot2.src = plot2.src + "&type=column";
+    }
 
     var auto_update_checkbox = document.getElementById("auto-update");
     if(auto_update_checkbox.checked)
@@ -64,3 +122,28 @@ function downloadData()
 
     document.location = data;
 }
+
+function setFullScreen()
+{
+    alert("Что-бы выйти из полноэкранного, нажмите 2 раза Ctrl");
+    fullScreen = 1;
+    document.getElementsByClassName("settings")[0].style.display = "none";
+    document.getElementsByClassName("plotsSettings")[0].style.display = "none";
+    setSettings();
+
+    document.addEventListener("keydown", documentEventSetDefault);
+}
+
+var documentEventSetDefault = function(event)
+{
+    if(event.ctrlKey)
+    {
+        fullScreen = 0;
+        setSettings();
+        document.getElementsByClassName("settings")[0].style.display = "inline";
+        document.getElementsByClassName("plotsSettings")[0].style.display = "inline";
+
+        document.removeEventListener("keydown", documentEventSetDefault);
+    }
+};
+

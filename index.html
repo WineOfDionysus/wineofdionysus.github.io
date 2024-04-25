@@ -7,6 +7,8 @@
         <link type="image/x-icon" href="favicon.ico" rel="shortcut icon">
         <link type="Image/x-icon" href="favicon.ico" rel="icon">
 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+
         <script type="text/javascript" src="getData.js"></script>
         <style>
             form 
@@ -21,8 +23,41 @@
             }
             .charts
             {
-                width: 440px;
-                margin-right: 100px;
+                width: 100%;
+                height: 100%;
+                margin-right: 40px;
+            }
+            .settings
+            {
+                width: 20%;
+                margin-right: 10px;
+                font-family: 'Ubuntu';
+            }
+            .plotsSettings
+            {
+                width: 15%;
+                font-family: 'Ubuntu';
+            }
+
+
+            input[type=button]
+            {
+                font-family: 'Ubuntu';
+                font-weight: 800;
+                color: rgb(255, 255, 255);
+                text-decoration: none;
+                padding: .8em 1em calc(.8em + 3px);
+                border-radius: 4px;
+                background: rgb(64,199,129);
+                box-shadow: 0 -3px rgb(53,167,110) inset;
+                transition: 0.2s;
+                border-width: 0px;
+            }
+            input[type=button]:hover { background: rgb(53, 167, 110); }
+            input[type=button]:active 
+            {
+                background: rgb(33,147,90);
+                box-shadow: 0 3px rgb(33,147,90) inset;
             }
         </style>
     </head>
@@ -30,8 +65,8 @@
     <body>
         <div class="wrapper">
             <div class="charts">
-                <iframe id="p1" width="100%" height="250" style="border: 2px solid #cccccc;" src="https://thingspeak.com/channels/2388828/charts/1?api_key=P270Q7US5PVK73F5"></iframe><br>
-                <iframe id="p2" width="100%" height="250" style="border: 2px solid #cccccc;" src="https://thingspeak.com/channels/2388828/charts/2?api_key=P270Q7US5PVK73F5"></iframe>
+                <iframe id="p1" width="100%" height="350px" style="border: 2px solid #cccccc;" src="https://thingspeak.com/channels/2388828/charts/1?api_key=P270Q7US5PVK73F5&width=auto&height=auto&xaxis=Дата и время&title=Данные датчика температуры"></iframe><br>
+                <iframe id="p2" width="100%" height="350px" style="border: 2px solid #cccccc;" src="https://thingspeak.com/channels/2388828/charts/2?api_key=P270Q7US5PVK73F5&width=auto&height=auto&xaxis=Дата и время&title=Данные датчика влажности"></iframe>
             </div>
 
             <div class="settings">
@@ -44,21 +79,39 @@
                         <fieldset>
                             <legend>Настройки сортировки по дате</legend>
                             <input type="checkbox" id="datecheck" "> Сортировка данных по времени<br>
-                            <input type="datetime-local" id="datestart"> Начало измерений<br>
-                            <input type="datetime-local" id="dateend"> Конец измерений<br>
-                        </fieldset><br>
+                            <input type="datetime-local" id="datestart"> Начало измерений↑<br>
+                            <input type="datetime-local" id="dateend"> Конец измерений↑<br>
+                        </fieldset>
+                        <br>
 
-                        Кол-во значений:<input type="number" min="0" max="7999" id="nums"><br><br>
+                        Кол-во значений:<input type="number" min="0" max="7999" step="1" id="nums"><br><br>
 
                         <input type="button" value="Применить настройки" onclick="setSettings()"><br><br>
                     </fieldset>
                 </form> 
 
                 <form style="width: 32%;">
-                    <fieldset>
+                    <fieldset style="width: 190px;">
                         <legend>Получение базы значений</legend>
                         <input type="checkbox" id="setSettingsToLoad"> Применить настройки для загрузки базы значений<br>
                         <input type="button" value="Скачать базу значений" onclick="downloadData();">
+                    </fieldset>
+                </form>
+                
+            </div>
+
+            <div class="plotsSettings"> 
+                <form >
+                    <fieldset>
+                        <legend>Настройки графиков</legend>
+                        Вид графиков:<select id="selectType">
+                            <option value="line" selected>Линейный</option>
+                            <option value="spline">Сплайн</option>
+                            <option value="column">Столбчатый</option>
+                        </select><br><br>
+                        Высота графиков(px):<input type="number" min="200" max="800" step="1" id="plotsH" value="350"><br>
+                        Ширина графиков(%):<input type="number" min="25" max="100" step="1" id="plotsW" value="100"><br><br>
+                        <input type="button" value="Полноэкранный режим" onclick="setFullScreen();">
                     </fieldset>
                 </form>
             </div>
